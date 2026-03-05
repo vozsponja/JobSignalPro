@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>JobSignal AI</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+font-family:'Inter',sans-serif;
+scroll-behavior:smooth;
+}
+
+.fade{
+opacity:0;
+transform:translateY(30px);
+transition:all .8s ease;
+}
+
+.fade.visible{
+opacity:1;
+transform:translateY(0);
+}
+
+.card{
+transition:all .3s ease;
+}
+
+.card:hover{
+transform:translateY(-10px);
+box-shadow:0 20px 40px rgba(0,0,0,.15);
+}
+
+.hero-img{
+animation:zoom 18s infinite alternate;
+}
+
+@keyframes zoom{
+from{transform:scale(1)}
+to{transform:scale(1.08)}
+}
+
+.loader{
+border:4px solid #ddd;
+border-top:4px solid #6366f1;
+border-radius:50%;
+width:40px;
+height:40px;
+animation:spin 1s linear infinite;
+margin:auto;
+}
+
+@keyframes spin{
+0%{transform:rotate(0)}
+100%{transform:rotate(360deg)}
+}
+
+</style>
+
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+<!-- NAVBAR -->
+
+<nav class="fixed w-full bg-white shadow z-50">
+
+<div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+
+<h1 class="text-2xl font-bold text-indigo-600">
+JobSignal AI
+</h1>
+
+<a href="#contacto" class="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700">
+Contacto
+</a>
+
+</div>
+
+</nav>
+
+<!-- HERO -->
+
+<section class="h-screen flex items-center justify-center relative text-white overflow-hidden">
+
+<img
+src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=2000&q=80"
+class="absolute w-full h-full object-cover hero-img">
+
+<div class="absolute bg-black/60 w-full h-full"></div>
+
+<div class="relative text-center max-w-3xl px-6 fade">
+
+<h1 class="text-6xl md:text-7xl font-bold mb-6">
+JobSignal AI
+</h1>
+
+<p class="text-xl mb-8">
+La plataforma que usa IA para ayudarte a encontrar tu próxima oportunidad laboral.
+</p>
+
+<a href="#simulador" class="bg-indigo-600 px-8 py-4 rounded-xl hover:bg-indigo-700">
+Probar simulador
+</a>
+
+</div>
+
+</section>
+
+<!-- PROBLEMA -->
+
+<section class="py-24">
+
+<div class="max-w-6xl mx-auto px-6 text-center">
+
+<h2 class="text-4xl font-bold mb-16 fade">
+El reto de encontrar empleo hoy
+</h2>
+
+<div class="grid md:grid-cols-3 gap-10">
+
+<div class="card bg-white p-6 rounded-xl shadow fade">
+
+<img src="https://images.unsplash.com/photo-1586281380117-5a60ae2050cc?auto=format&fit=crop&w=800&q=80" class="rounded-lg mb-4">
+
+<h3 class="text-xl font-semibold mb-2">
+Optimización de CV
+</h3>
+
+<p>
+Muchos candidatos no saben cómo mejorar su perfil profesional.
+</p>
+
+</div>
+
+<div class="card bg-white p-6 rounded-xl shadow fade">
+
+<img src="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=800&q=80" class="rounded-lg mb-4">
+
+<h3 class="text-xl font-semibold mb-2">
+Aplicaciones estratégicas
+</h3>
+
+<p>
+Enviar CV sin estrategia reduce las probabilidades de éxito.
+</p>
+
+</div>
+
+<div class="card bg-white p-6 rounded-xl shadow fade">
+
+<img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80" class="rounded-lg mb-4">
+
+<h3 class="text-xl font-semibold mb-2">
+Decisiones de carrera
+</h3>
+
+<p>
+La IA ayuda a elegir el mejor camino profesional.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- SIMULADOR -->
+
+<section id="simulador" class="py-24 bg-indigo-600 text-white">
+
+<div class="max-w-3xl mx-auto text-center px-6">
+
+<h2 class="text-4xl font-bold mb-6">
+Simulador JobSignal AI
+</h2>
+
+<p class="mb-10">
+Describe tu perfil profesional.
+</p>
+
+<textarea
+id="perfil"
+placeholder="Ejemplo: abogado especializado en derecho corporativo"
+class="w-full p-4 rounded-lg text-black mb-6"></textarea>
+
+<button
+onclick="analizar()"
+class="bg-white text-indigo-600 px-8 py-4 rounded-lg font-semibold hover:scale-105 transition">
+Analizar perfil
+</button>
+
+<div id="loading" class="mt-10 hidden">
+<div class="loader"></div>
+<p class="mt-4">Analizando perfil con IA...</p>
+</div>
+
+<div id="resultado" class="mt-10 text-lg"></div>
+
+</div>
+
+</section>
+
+<script>
+
+const perfiles=[
+
+{
+keywords:["abogado","legal","derecho"],
+skills:["análisis jurídico","interpretación normativa"],
+roles:["Corporate Lawyer","Compliance Specialist","Legal Consultant"],
+empresas:["Garrigues","Clifford Chance","Baker McKenzie"]
+},
+
+{
+keywords:["agricola","agronomo","perito agricola"],
+skills:["gestión agrícola","análisis de suelos"],
+roles:["Agricultural Consultant","Crop Specialist"],
+empresas:["John Deere","Syngenta","Bayer Crop Science"]
+},
+
+{
+keywords:["matematico"],
+skills:["modelización matemática","estadística avanzada"],
+roles:["Quantitative Analyst","Data Scientist"],
+empresas:["Jane Street","Two Sigma","Citadel"]
+},
+
+{
+keywords:["biologo"],
+skills:["biología molecular","análisis genético"],
+roles:["Research Scientist","Microbiologist"],
+empresas:["Genentech","Illumina","Moderna"]
+},
+
+{
+keywords:["quimico"],
+skills:["síntesis química","análisis químico"],
+roles:["Chemical Engineer","Materials Scientist"],
+empresas:["BASF","Dow","DuPont"]
+}
+
+];
+
+function detectarPerfil(texto){
+
+for(let p of perfiles){
+for(let k of p.keywords){
+if(texto.includes(k)) return p;
+}
+}
+
+return null;
+
+}
+
+function analizar(){
+
+let texto=document.getElementById("perfil").value.toLowerCase();
+
+document.getElementById("resultado").innerHTML="";
+document.getElementById("loading").style.display="block";
+
+setTimeout(()=>{
+
+document.getElementById("loading").style.display="none";
+
+let perfil=detectarPerfil(texto);
+
+if(!perfil){
+
+perfil={
+skills:["comunicación","gestión","análisis"],
+roles:["Project Manager","Operations Analyst"],
+empresas:["Amazon","IBM"]
+};
+
+}
+
+document.getElementById("resultado").innerHTML=`
+
+<div class="bg-white text-gray-800 p-8 rounded-xl shadow">
+
+<h3 class="text-2xl font-bold mb-4">Resultados del análisis</h3>
+
+<p><b>Habilidades detectadas:</b><br>${perfil.skills.join(", ")}</p>
+
+<p class="mt-4"><b>Roles sugeridos:</b><br>${perfil.roles.join("<br>")}</p>
+
+<p class="mt-4"><b>Empresas donde podrías encajar:</b><br>${perfil.empresas.join(", ")}</p>
+
+</div>
+
+`;
+
+},1500);
+
+}
+
+/* ANIMACIONES */
+
+const faders=document.querySelectorAll(".fade");
+
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+entry.target.classList.add("visible");
+}
+});
+});
+
+faders.forEach(el=>observer.observe(el));
+
+</script>
+
+</body>
+</html>
