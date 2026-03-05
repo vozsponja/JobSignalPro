@@ -104,7 +104,7 @@ JobSignal AI
 </h1>
 
 <p class="text-xl mb-8">
-La plataforma que usa IA para ayudarte a encontrar tu próxima oportunidad laboral.
+Descubre oportunidades laborales que no aparecen en los portales de empleo.
 </p>
 
 <a href="#simulador" class="bg-indigo-600 px-8 py-4 rounded-xl hover:bg-indigo-700">
@@ -186,23 +186,21 @@ Simulador JobSignal AI
 </h2>
 
 <p class="mb-10">
-Describe tu perfil profesional.
+Describe tu profesión o perfil profesional
 </p>
 
 <textarea
 id="perfil"
-placeholder="Ejemplo: abogado especializado en derecho corporativo"
+placeholder="Ejemplo: farmacéutico especializado en regulación sanitaria"
 class="w-full p-4 rounded-lg text-black mb-6"></textarea>
 
-<button
-onclick="analizar()"
-class="bg-white text-indigo-600 px-8 py-4 rounded-lg font-semibold hover:scale-105 transition">
+<button onclick="analizar()" class="bg-white text-indigo-600 px-8 py-4 rounded-lg font-semibold hover:scale-105 transition">
 Analizar perfil
 </button>
 
 <div id="loading" class="mt-10 hidden">
 <div class="loader"></div>
-<p class="mt-4">Analizando perfil con IA...</p>
+<p class="mt-4">Detectando oportunidades ocultas...</p>
 </div>
 
 <div id="resultado" class="mt-10 text-lg"></div>
@@ -213,77 +211,93 @@ Analizar perfil
 
 <script>
 
-const perfiles=[
+const profesiones = {
 
-{
-keywords:["abogado","legal","derecho"],
-skills:["análisis jurídico","interpretación normativa"],
-roles:["Corporate Lawyer","Compliance Specialist","Legal Consultant"],
-empresas:["Garrigues","Clifford Chance","Baker McKenzie"]
+farmaceutico:{
+keywords:["farmaceutico","farmacia"],
+skills:["farmacología","regulación sanitaria","investigación clínica"],
+roles:["Medical Affairs Manager","Regulatory Affairs Specialist","Clinical Trial Manager"],
+organizaciones:["departamentos médicos","CRO","farmacéuticas"],
+empresas:["Pfizer","Novartis","Roche","AstraZeneca"],
+canales:["consultoras regulatorias","headhunters farmacéuticos","congresos médicos"]
 },
 
-{
-keywords:["agricola","agronomo","perito agricola"],
-skills:["gestión agrícola","análisis de suelos"],
-roles:["Agricultural Consultant","Crop Specialist"],
-empresas:["John Deere","Syngenta","Bayer Crop Science"]
+biologo:{
+keywords:["biologo","biologia","microbiologia"],
+skills:["biología molecular","experimentación","análisis genético"],
+roles:["Research Scientist","Microbiologist","Bioinformatics Specialist"],
+organizaciones:["startups biotech","institutos de investigación","laboratorios privados"],
+empresas:["Genentech","Illumina","Moderna"],
+canales:["conferencias científicas","proyectos de investigación","redes académicas"]
 },
 
-{
-keywords:["matematico"],
-skills:["modelización matemática","estadística avanzada"],
-roles:["Quantitative Analyst","Data Scientist"],
-empresas:["Jane Street","Two Sigma","Citadel"]
+quimico:{
+keywords:["quimico","quimica"],
+skills:["síntesis química","análisis químico","formulación"],
+roles:["Materials Scientist","Chemical Process Engineer","Formulation Chemist"],
+organizaciones:["industria química","laboratorios industriales","I+D"],
+empresas:["BASF","Dow","DuPont"],
+canales:["congresos industriales","consultoras técnicas","redes profesionales"]
 },
 
-{
-keywords:["biologo"],
-skills:["biología molecular","análisis genético"],
-roles:["Research Scientist","Microbiologist"],
-empresas:["Genentech","Illumina","Moderna"]
+abogado:{
+keywords:["abogado","derecho","legal"],
+skills:["análisis jurídico","negociación","interpretación normativa"],
+roles:["Compliance Officer","Legal Operations Manager","Policy Advisor"],
+organizaciones:["consultoras legales","departamentos de compliance","legaltech"],
+empresas:["Garrigues","Clifford Chance","Baker McKenzie"],
+canales:["headhunters legales","networking jurídico","asociaciones profesionales"]
 },
 
-{
-keywords:["quimico"],
-skills:["síntesis química","análisis químico"],
-roles:["Chemical Engineer","Materials Scientist"],
-empresas:["BASF","Dow","DuPont"]
+ingeniero:{
+keywords:["ingeniero","engineering"],
+skills:["optimización de procesos","gestión de proyectos","análisis técnico"],
+roles:["Operations Strategist","Process Optimization Specialist","Product Engineer"],
+organizaciones:["consultoras industriales","departamentos de operaciones","startups tecnológicas"],
+empresas:["Siemens","Bosch","General Electric"],
+canales:["networking sectorial","consultoras técnicas","headhunters industriales"]
 }
 
-];
+}
 
 function detectarPerfil(texto){
 
-for(let p of perfiles){
-for(let k of p.keywords){
-if(texto.includes(k)) return p;
-}
+for(let p in profesiones){
+
+for(let k of profesiones[p].keywords){
+
+if(texto.includes(k)) return profesiones[p]
+
 }
 
-return null;
+}
+
+return null
 
 }
 
 function analizar(){
 
-let texto=document.getElementById("perfil").value.toLowerCase();
+let texto=document.getElementById("perfil").value.toLowerCase()
 
-document.getElementById("resultado").innerHTML="";
-document.getElementById("loading").style.display="block";
+document.getElementById("loading").style.display="block"
+document.getElementById("resultado").innerHTML=""
 
 setTimeout(()=>{
 
-document.getElementById("loading").style.display="none";
+document.getElementById("loading").style.display="none"
 
-let perfil=detectarPerfil(texto);
+let perfil=detectarPerfil(texto)
 
 if(!perfil){
 
 perfil={
-skills:["comunicación","gestión","análisis"],
-roles:["Project Manager","Operations Analyst"],
-empresas:["Amazon","IBM"]
-};
+skills:["análisis","comunicación","gestión"],
+roles:["Project Manager","Strategy Analyst"],
+organizaciones:["consultoras","startups","equipos de innovación"],
+empresas:["Accenture","IBM","Amazon"],
+canales:["networking profesional","headhunters"]
+}
 
 }
 
@@ -291,37 +305,77 @@ document.getElementById("resultado").innerHTML=`
 
 <div class="bg-white text-gray-800 p-8 rounded-xl shadow">
 
-<h3 class="text-2xl font-bold mb-4">Resultados del análisis</h3>
+<h3 class="text-2xl font-bold mb-4">Oportunidades detectadas</h3>
 
-<p><b>Habilidades detectadas:</b><br>${perfil.skills.join(", ")}</p>
+<p><b>Habilidades detectadas</b><br>${perfil.skills.join(", ")}</p>
 
-<p class="mt-4"><b>Roles sugeridos:</b><br>${perfil.roles.join("<br>")}</p>
+<p class="mt-4"><b>Roles ocultos compatibles</b><br>${perfil.roles.join("<br>")}</p>
 
-<p class="mt-4"><b>Empresas donde podrías encajar:</b><br>${perfil.empresas.join(", ")}</p>
+<p class="mt-4"><b>Organizaciones donde surgen oportunidades</b><br>${perfil.organizaciones.join("<br>")}</p>
+
+<p class="mt-4"><b>Empresas relevantes del sector</b><br>${perfil.empresas.join(", ")}</p>
+
+<p class="mt-4"><b>Canales donde aparecen oportunidades</b><br>${perfil.canales.join("<br>")}</p>
 
 </div>
 
-`;
+`
 
-},1500);
+},1500)
 
 }
 
-/* ANIMACIONES */
+/* animaciones */
 
-const faders=document.querySelectorAll(".fade");
+const faders=document.querySelectorAll(".fade")
 
 const observer=new IntersectionObserver(entries=>{
 entries.forEach(entry=>{
 if(entry.isIntersecting){
-entry.target.classList.add("visible");
+entry.target.classList.add("visible")
 }
-});
-});
+})
+})
 
-faders.forEach(el=>observer.observe(el));
+faders.forEach(el=>observer.observe(el))
 
 </script>
+
+<!-- CONTACTO -->
+
+<section id="contacto" class="py-24">
+
+<div class="max-w-3xl mx-auto px-6">
+
+<h2 class="text-4xl font-bold text-center mb-10">
+Contacto
+</h2>
+
+<form class="bg-white p-10 rounded-xl shadow space-y-6">
+
+<input type="text" placeholder="Nombre" class="w-full border p-3 rounded-lg">
+
+<input type="email" placeholder="Email" class="w-full border p-3 rounded-lg">
+
+<textarea placeholder="Cuéntanos tu situación laboral" class="w-full border p-3 rounded-lg"></textarea>
+
+<button class="w-full bg-indigo-600 text-white py-4 rounded-lg hover:bg-indigo-700">
+Enviar
+</button>
+
+</form>
+
+<p class="text-center mt-6">
+Contacto: vozsponja@gmail.com
+</p>
+
+</div>
+
+</section>
+
+<footer class="bg-gray-900 text-white text-center py-8">
+JobSignal AI • Plataforma de búsqueda de oportunidades laborales invisibles
+</footer>
 
 </body>
 </html>
